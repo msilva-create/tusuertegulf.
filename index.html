@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tu Suerte es Gulf | Jairo Sánchez</title>
+<meta name="theme-color" content="#07285C">
+<meta name="description" content="¡Compra Gulf y gana! Registra tu código y participa por un Smart TV de 50 pulgadas.">
+<style>
+  :root{
+    --navy:#073477; --navy-d:#04224F; --navy-dd:#021638;
+    --orange:#F37021; --orange-d:#D85C10;
+    --white:#ffffff; --text:#0E1F3D; --muted:#5A6680; --line:#D5DCE8; --field:#F6F8FC;
+    --err:#B42318; --errbg:#FDECEA;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  html{background:#021638}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+    color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh;
+    background:
+      radial-gradient(circle at 85% -10%, rgba(243,112,33,.28) 0, rgba(243,112,33,0) 42%),
+      linear-gradient(180deg,var(--navy) 0%,var(--navy-d) 55%,var(--navy-dd) 100%);
+  }
+  .wrap{max-width:480px;margin:0 auto;padding:22px 16px 28px}
+
+  /* Encabezado */
+  header{text-align:center;color:var(--white);padding:4px 0 20px}
+  .logo{display:block;max-width:150px;max-height:84px;width:auto;height:auto;margin:0 auto 14px}
+  h1{margin:0;font-size:clamp(30px,9vw,42px);line-height:1.02;font-weight:900;letter-spacing:-.01em;text-transform:uppercase}
+  h1 .o{color:var(--orange)}
+  .stripe{width:64px;height:5px;border-radius:5px;background:var(--orange);margin:14px auto 12px}
+  .lead{margin:0 auto;max-width:390px;font-size:16px;line-height:1.45;color:#D7E1F3}
+  .lead strong{color:#fff}
+
+  /* Tarjeta */
+  .card{background:var(--white);border-radius:20px;padding:22px 18px 22px;box-shadow:0 18px 40px rgba(0,0,0,.28)}
+  .prize{display:flex;align-items:center;gap:10px;background:#FFF3EB;border:1px solid #FFD5BA;color:#8A3A08;border-radius:12px;padding:10px 12px;font-size:14px;font-weight:600;line-height:1.35;margin-bottom:6px}
+  .prize .tv{font-size:22px;line-height:1}
+  label.f{display:block;font-weight:700;font-size:14px;margin:16px 0 6px;color:var(--navy)}
+  input[type=text],input[type=tel]{width:100%;font:inherit;font-size:16px;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--field);color:var(--text);-webkit-appearance:none;appearance:none}
+  input[type=text]:focus,input[type=tel]:focus{outline:none;border-color:var(--navy);background:#fff;box-shadow:0 0 0 3px rgba(7,52,119,.14)}
+  .bad{border-color:var(--err)!important;background:#FFF8F7!important}
+  #code{text-transform:uppercase;letter-spacing:.16em;font-weight:800;text-align:center;font-size:22px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--navy)}
+  #code::placeholder{letter-spacing:.1em;font-weight:600;color:#A3ADBF}
+  .hint{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.4}
+
+  .cats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;position:relative}
+  .cats input{position:absolute;opacity:0;pointer-events:none}
+  .cats label{display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 2px 9px;text-align:center;border:1.5px solid var(--line);border-radius:12px;background:var(--field);font-weight:700;font-size:13.5px;color:var(--navy);cursor:pointer;user-select:none;transition:background .15s,border-color .15s,color .15s}
+  .cats label .e{font-size:20px;line-height:1}
+  .cats input:checked + label{background:var(--navy);border-color:var(--navy);color:#fff}
+  .cats input:focus-visible + label{box-shadow:0 0 0 3px rgba(7,52,119,.25)}
+  .cats.bad label{border-color:var(--err)}
+
+  .check{display:flex;gap:10px;align-items:flex-start;margin-top:18px;font-size:13.5px;line-height:1.45;cursor:pointer}
+  .check input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--orange);flex:none}
+  .check a{color:var(--navy);font-weight:700}
+
+  .btn{display:block;width:100%;margin-top:20px;padding:16px;border:0;border-radius:14px;background:var(--orange);color:#fff;font:inherit;font-size:17px;font-weight:900;letter-spacing:.03em;text-transform:uppercase;cursor:pointer;box-shadow:0 8px 18px rgba(243,112,33,.35);transition:background .15s,transform .05s}
+  .btn:hover{background:var(--orange-d)}
+  .btn:active{transform:translateY(1px)}
+  .btn[disabled]{opacity:.75;cursor:wait}
+  .msg{margin-top:14px;padding:12px 14px;border-radius:12px;font-size:14.5px;font-weight:600;line-height:1.45;background:var(--errbg);color:var(--err)}
+
+  /* Éxito */
+  .done{text-align:center;padding:6px 2px 2px}
+  .trophy{font-size:58px;line-height:1;margin:4px 0 10px;animation:pop .6s cubic-bezier(.2,1.6,.4,1) both}
+  .done h2{margin:0 0 12px;font-size:clamp(26px,7.5vw,32px);line-height:1.05;font-weight:900;color:var(--navy);text-transform:uppercase}
+  .done p{margin:0 0 10px;font-size:16px;line-height:1.5;color:var(--text)}
+  .done p.thanks{font-weight:700;color:var(--orange-d)}
+  @keyframes pop{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
+
+  .closed{text-align:center;color:var(--muted);line-height:1.5;margin:4px 0}
+
+  /* Redes y pie */
+  .social{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:22px}
+  .social a{display:inline-flex;align-items:center;gap:7px;padding:10px 16px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:#fff;text-decoration:none;font-weight:700;font-size:14px}
+  .social a:hover{background:rgba(255,255,255,.18)}
+  .social svg{width:17px;height:17px}
+  footer{text-align:center;font-size:13px;color:#AFC0DE;margin-top:18px;line-height:1.5}
+  footer strong{color:#fff}
+
+  .spin{display:inline-block;width:17px;height:17px;border:3px solid rgba(255,255,255,.45);border-top-color:#fff;border-radius:50%;animation:s .8s linear infinite;vertical-align:-3px;margin-right:9px}
+  @keyframes s{to{transform:rotate(360deg)}}
+  #confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<canvas id="confetti" hidden></canvas>
+
+<div class="wrap">
+  <header>
+    <img class="logo" id="logo" alt="Gulf" src="logo.png">
+    <h1>¡Tu suerte es <span class="o">Gulf!</span></h1>
+    <div class="stripe"></div>
+    <p class="lead"><strong>¡Compra Gulf y gana!</strong> Entre más códigos registres, más oportunidades tendrás de ganar.</p>
+  </header>
+
+  <div class="card">
+    <p class="closed" id="closed" hidden>La campaña todavía no está habilitada. Vuelve pronto.</p>
+
+    <form id="form" novalidate>
+      <div class="prize"><span class="tv">📺</span><span>Participa por un <strong>Smart TV de 50 pulgadas</strong></span></div>
+
+      <label class="f" for="name">Nombre completo</label>
+      <input type="text" id="name" autocomplete="name" maxlength="90">
+
+      <label class="f" for="phone">Celular</label>
+      <input type="tel" id="phone" inputmode="numeric" autocomplete="tel-national" placeholder="3001234567">
+      <div class="hint">10 dígitos, empieza por 3.</div>
+
+      <label class="f" for="store">Punto de venta donde compraste Gulf</label>
+      <input type="text" id="store" maxlength="100">
+
+      <label class="f" id="catLabel">¿Para qué vehículo compraste Gulf?</label>
+      <div class="cats" id="cats" role="radiogroup" aria-labelledby="catLabel">
+        <input type="radio" name="category" id="c1" value="Moto"><label for="c1"><span class="e">🏍️</span>Moto</label>
+        <input type="radio" name="category" id="c2" value="Carro"><label for="c2"><span class="e">🚗</span>Carro</label>
+        <input type="radio" name="category" id="c3" value="Pesado"><label for="c3"><span class="e">🚚</span>Pesado</label>
+        <input type="radio" name="category" id="c4" value="Otro"><label for="c4"><span class="e">⚙️</span>Otro</label>
+      </div>
+
+      <label class="f" for="code">Código de la tarjeta</label>
+      <input type="text" id="code" placeholder="JAI•••••" autocomplete="off" autocapitalize="characters" spellcheck="false">
+      <div class="hint">Raspa tu tarjeta. El código tiene 8 caracteres y empieza por <strong id="prefix"></strong>.</div>
+
+      <label class="check">
+        <input type="checkbox" id="accepted">
+        <span id="termsText">Autorizo el tratamiento de mis datos personales y acepto el reglamento de la campaña.</span>
+      </label>
+
+      <button type="submit" class="btn" id="send">Registrar mi código →</button>
+      <div class="msg" id="msg" role="alert" hidden></div>
+    </form>
+
+    <div class="done" id="done" hidden>
+      <div class="trophy">🎉</div>
+      <h2>¡Ya estás participando!</h2>
+      <p id="doneMsg">Tu código fue registrado correctamente para el sorteo de un Smart TV de 50 pulgadas.</p>
+      <p class="thanks">¡Gracias por elegir Gulf! Próximamente anunciaremos a nuestro ganador.</p>
+      <button type="button" class="btn" id="again">Registrar otro código →</button>
+    </div>
+  </div>
+
+  <div class="social" id="social"></div>
+  <footer><strong>Gulf · <span id="dist"></span></strong> | Juntos somos imparables</footer>
+</div>
+
+<script>
+/* ==================== CONFIGURACIÓN ==================== */
+const CONFIG = {
+  DISTRIBUIDOR: 'Jairo Sánchez',
+  PREFIX: 'JAI',
+  LOGO_RESPALDO: 'https://drive.google.com/thumbnail?id=1D6vrYbX8pSt4pcFDT7D4DCXWsYzUnGSm&sz=w600',
+  INSTAGRAM_URL: 'https://www.instagram.com/gulfoilcolombia/',
+  FACEBOOK_URL: 'https://linktr.ee/gulfcolombia',
+  TIKTOK_URL: '',
+  REGLAMENTO_URL: '',
+  PRIVACIDAD_URL: '',
+  CAMPAIGN_OPEN: true
+};
+/* ======================================================= */
+
+const $ = id => document.getElementById(id);
+const form = $('form'), btn = $('send'), msg = $('msg');
+const BTN_TEXT = 'Registrar mi código →';
+const MSG_OK = 'Tu código fue registrado correctamente para el sorteo de un Smart TV de 50 pulgadas.';
+
+$('dist').textContent = CONFIG.DISTRIBUIDOR;
+$('prefix').textContent = CONFIG.PREFIX;
+
+// Logo: usa logo.png; si no está, el de Drive; si tampoco, se oculta.
+const logo = $('logo');
+logo.onerror = () => {
+  if (CONFIG.LOGO_RESPALDO && logo.dataset.fb !== '1') { logo.dataset.fb = '1'; logo.src = CONFIG.LOGO_RESPALDO; }
+  else logo.hidden = true;
+};
+
+const a = (url, txt) => `<a href="${url}" target="_blank" rel="noopener">${txt}</a>`;
+if (CONFIG.REGLAMENTO_URL || CONFIG.PRIVACIDAD_URL) {
+  const p = CONFIG.PRIVACIDAD_URL ? a(CONFIG.PRIVACIDAD_URL, 'tratamiento de mis datos personales') : 'tratamiento de mis datos personales';
+  const r = CONFIG.REGLAMENTO_URL ? a(CONFIG.REGLAMENTO_URL, 'reglamento de la campaña') : 'reglamento de la campaña';
+  $('termsText').innerHTML = `Autorizo el ${p} y acepto el ${r}.`;
+}
+
+const ICONS = {
+  Instagram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>',
+  Facebook: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v9h4v-9h3l.5-4h-3.5V8.8c0-.5.3-.8.5-.8z"/></svg>',
+  TikTok: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.4 2.2 1.8 3.7 4 4v3.3a7.6 7.6 0 0 1-4-1.2v6.4a5.9 5.9 0 1 1-5.9-5.9c.3 0 .6 0 .9.1v3.4a2.6 2.6 0 1 0 1.7 2.4V3h3.3z"/></svg>'
+};
+$('social').innerHTML = [['Instagram', CONFIG.INSTAGRAM_URL], ['Facebook', CONFIG.FACEBOOK_URL], ['TikTok', CONFIG.TIKTOK_URL]]
+  .filter(([, u]) => u).map(([n, u]) => a(u, ICONS[n] + n)).join('');
+
+if (!CONFIG.CAMPAIGN_OPEN) { form.hidden = true; $('closed').hidden = false; }
+
+// Código desde el enlace (?codigo=JAIXXXXX)
+const qp = new URLSearchParams(location.search).get('codigo');
+if (qp) $('code').value = qp.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8);
+
+// Limpieza mientras escriben (también al pegar con espacios o guiones)
+$('code').addEventListener('input', e => { const v = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8); if (v !== e.target.value) e.target.value = v; });
+$('phone').addEventListener('input', e => { const v = e.target.value.replace(/\D/g, '').slice(0, 10); if (v !== e.target.value) e.target.value = v; });
+['name', 'phone', 'store', 'code'].forEach(id => $(id).addEventListener('input', () => $(id).classList.remove('bad')));
+form.querySelectorAll('input[name=category]').forEach(r => r.addEventListener('change', () => $('cats').classList.remove('bad')));
+
+function showError(t) { msg.textContent = t; msg.hidden = false; }
+function clearError() { msg.hidden = true; msg.textContent = ''; document.querySelectorAll('.bad').forEach(x => x.classList.remove('bad')); }
+
+function validate(d) {
+  if (d.name.length < 3) return ['name', 'Escribe tu nombre completo.'];
+  if (!/^3\d{9}$/.test(d.phone)) return ['phone', 'El celular debe tener 10 dígitos y empezar por 3.'];
+  if (d.store.length < 2) return ['store', 'Escribe el punto de venta donde compraste Gulf.'];
+  if (!d.category) return ['cats', 'Selecciona para qué vehículo compraste Gulf.'];
+  if (!new RegExp('^' + CONFIG.PREFIX + '[A-HJ-NP-Z2-9]{5}$').test(d.code)) return ['code', 'Código no válido. Revisa que esté bien escrito.'];
+  if (!d.accepted) return ['accepted', 'Debes autorizar el tratamiento de datos y aceptar el reglamento.'];
+  return null;
+}
+
+let busy = false;
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  if (busy) return;
+  clearError();
+  const cat = form.querySelector('input[name=category]:checked');
+  const data = {
+    name: $('name').value.trim(),
+    phone: $('phone').value.replace(/\D/g, ''),
+    store: $('store').value.trim(),
+    category: cat ? cat.value : '',
+    code: $('code').value.trim().toUpperCase(),
+    accepted: $('accepted').checked === true
+  };
+  const bad = validate(data);
+  if (bad) {
+    const el = $(bad[0]); el.classList.add('bad');
+    // Mostrar el mensaje justo debajo del campo con problema
+    const anchor = bad[0] === 'accepted' ? el.closest('label') : (el.nextElementSibling && el.nextElementSibling.classList.contains('hint') ? el.nextElementSibling : el);
+    anchor.after(msg);
+    showError(bad[1]);
+    (bad[0] === 'cats' ? $('c1') : el).focus({ preventScroll: true });
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  btn.after(msg); // errores del servidor: debajo del botón
+  busy = true; btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Registrando…';
+  try {
+    const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 35000);
+    let res;
+    try {
+      const r = await fetch('/api/registrar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data), signal: ctrl.signal });
+      res = await r.json();
+    } finally { clearTimeout(t); }
+    if (res && res.ok) {
+      $('doneMsg').textContent = res.message && res.message.indexOf('a tu nombre') > -1 ? res.message : MSG_OK;
+      form.hidden = true; $('done').hidden = false;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      confetti();
+    } else {
+      showError((res && res.message) || 'No pudimos registrar tu código. Intenta nuevamente.');
+      if (res && /código/i.test(res.message || '')) $('code').classList.add('bad');
+    }
+  } catch (err) {
+    showError('No pudimos confirmar tu registro. Revisa tu conexión e intenta nuevamente en un minuto con los mismos datos.');
+  } finally {
+    busy = false; btn.disabled = false; btn.textContent = BTN_TEXT;
+  }
+});
+
+// Registrar otro código: conserva nombre, celular, punto y vehículo
+$('again').addEventListener('click', () => {
+  $('code').value = ''; $('done').hidden = true; form.hidden = false; clearError();
+  $('code').scrollIntoView({ behavior: 'smooth', block: 'center' }); $('code').focus({ preventScroll: true });
+});
+
+/* Confeti (sin librerías externas) */
+function confetti() {
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const c = $('confetti'), ctx = c.getContext('2d'), dpr = window.devicePixelRatio || 1;
+  c.hidden = false; c.width = innerWidth * dpr; c.height = innerHeight * dpr; ctx.scale(dpr, dpr);
+  const colors = ['#F37021', '#073477', '#FFFFFF', '#FFC72C', '#FF9A5A', '#2E6BD1'];
+  const P = Array.from({ length: 170 }, (_, i) => ({
+    x: innerWidth * (i % 2 ? 0.15 : 0.85) + (Math.random() - .5) * 60, y: innerHeight * 0.35,
+    vx: (Math.random() - .5) * 13, vy: -Math.random() * 15 - 6,
+    w: 6 + Math.random() * 6, h: 9 + Math.random() * 8, r: Math.random() * 6, vr: (Math.random() - .5) * .35,
+    col: colors[i % colors.length]
+  }));
+  const start = performance.now();
+  (function frame(now) {
+    const t = now - start;
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    P.forEach(p => {
+      p.vy += .35; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.r += p.vr;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.globalAlpha = Math.max(0, 1 - t / 4200);
+      ctx.fillStyle = p.col; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h * Math.abs(Math.cos(p.r * 2)));
+      ctx.restore();
+    });
+    if (t < 4200) requestAnimationFrame(frame); else { ctx.clearRect(0, 0, innerWidth, innerHeight); c.hidden = true; ctx.setTransform(1, 0, 0, 1, 0, 0); }
+  })(start);
+}
+</script>
+</body>
+</html>
